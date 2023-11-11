@@ -1,0 +1,19 @@
+{{/* HOW TO */}}
+{{/* COPY head.html FROM THEME'S themes/PaperMod/layouts/partials/ TO layouts/partials/ */}}
+
+{{/* FIND "Search" SECTION IN IT AND REPLACE it AS FOLLOWWING AND SAVE */}}
+
+{{- /* Search */}}
+{{- if (eq .Layout `search`) -}}
+<link crossorigin="anonymous" rel="preload" as="fetch" href="../index.json">
+{{- $fastsearch := resources.Get "js/fastsearch.js" | js.Build (dict "params" (dict "minisearchOpts" site.Params.minisearchOpts)) | resources.Minify }}
+{{- $minisearchjs := resources.Get "js/index.min.js" }}
+{{- $license_js := resources.Get "js/license.js" }}
+{{- if not site.Params.assets.disableFingerprinting }}
+{{- $search := (slice $minisearchjs $license_js $fastsearch ) | resources.Concat "assets/js/search.js" | fingerprint }}
+<script defer crossorigin="anonymous" src="{{ $search.RelPermalink }}" integrity="{{ $search.Data.Integrity }}"></script>
+{{- else }}
+{{- $search := (slice $minisearchjs $fastsearch ) | resources.Concat "assets/js/search.js" }}
+<script defer crossorigin="anonymous" src="{{ $search.RelPermalink }}"></script>
+{{- end }}
+{{- end -}}

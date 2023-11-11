@@ -1,0 +1,14 @@
+# ADD BELOW SECTION TO THE params SECTION IN YOUR SITE CONFIG (amend appropriately for toml/json)
+
+params:
+  minisearchOpts:
+    limit: 50 # js slice() output results. Max limit defined in fastsearch.js and equal to 1000 (though you can set any number)
+    # https://lucaong.github.io/minisearch/types/MiniSearch.Options.html
+    fields: ["title", "content", "summary"] # "id" field is already added by default in index.json and is equal to page permalink
+    # storeFields: ["title", "content", "summary"] # due to some reason this is not working with name storeFields
+    # https://lucaong.github.io/minisearch/types/MiniSearch.SearchOptions.html
+    fuzzy: 0.3 # or true for default value
+    prefix: true # or number
+    combineWith: "OR" # or "AND"
+    boost: { title: 1, summary: 1, content: 1 }
+    weights: { fuzzy: 0.45, prefix: 0.375 } # default { fuzzy: 0.45, prefix: 0.375 }
